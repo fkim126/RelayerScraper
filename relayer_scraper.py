@@ -26,11 +26,12 @@ def transferMS():
 
                 txhash = data_json["txs"][i]["data"]["txhash"]
                 if txhash not in txSet:
+                    txSet.add(txhash)
                     timestamp = data_json["txs"][i]["header"]["timestamp"]
                     amount = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["token"]["amount"]
                     senderAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["sender"]
                     receiverAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["receiver"]
-                    
+
                     print("Time", timestamp)
                     print("TxHash", txhash)
                     print("Amount", float(amount)*.000001)
