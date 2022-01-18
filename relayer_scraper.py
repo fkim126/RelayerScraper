@@ -16,7 +16,7 @@ def transferMS():
     try:
         writer = csv.writer(csvTransfer, lineterminator='\n')
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Time'))
-        while offset <= 0:
+        while offset <= 37800:
             urlTransfer = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=TRANSFER".format(str(offset))
             headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
             response = requests.get(urlTransfer, headers = headers)
