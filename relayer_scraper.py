@@ -71,7 +71,7 @@ def receiveMS():
                                     senderAddress = aDict["sender"]
                                     receiverAddress = aDict["receiver"]
 
-                        writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, timestamp))
+                                    writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, timestamp))
             offset = offset + 45
         print("--- %s seconds ---" % (time.time() - start_time))
     except Exception as e:
