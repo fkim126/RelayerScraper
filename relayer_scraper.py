@@ -19,7 +19,7 @@ def transferMS():
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Time'))
         while offset <= 37800:
             urlTransfer = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=TRANSFER".format(str(offset))
-            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+            headers = {'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'}
             response = requests.get(urlTransfer, headers = headers)
             data_json = response.json()
 
@@ -46,7 +46,7 @@ def receiveMS():
     start_time = time.time()
     offset = 0
     txSet = set()
-    csvReceived = open('received_transactions.csv', 'w+')
+    csvReceived = open('received_transactions.csv', 'wt+')
 
     try:
         writer = csv.writer(csvReceived, lineterminator='\n')
@@ -71,7 +71,10 @@ def receiveMS():
                                     senderAddress = aDict["sender"]
                                     receiverAddress = aDict["receiver"]
 
-                        writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, timestamp))
+                                    writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, timestamp))
+                else:
+                    print(response.status_code)
+                    break
             offset = offset + 45
         print("--- %s seconds ---" % (time.time() - start_time))
     except Exception as e:
