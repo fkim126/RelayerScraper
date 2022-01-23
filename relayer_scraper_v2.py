@@ -17,7 +17,7 @@ def transferMS():
     try:
         writer = csv.writer(csvTransfer, lineterminator='\n')
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Asset', 'Time'))
-        while offset <= 0: #37800:
+        while offset <= 37800:
             http = urllib3.PoolManager()
             urlTransfer = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=TRANSFER".format(str(offset))
             r = http.request('GET', urlTransfer)
@@ -54,7 +54,7 @@ def receiveMS():
     try:
         writer = csv.writer(csvReceived, lineterminator='\n')
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Asset', 'Time'))
-        while offset <= 0: #42885:
+        while offset <= 42885:
             http = urllib3.PoolManager()
             urlReceive = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=RECEIVE".format(str(offset))
             r = http.request('GET', urlReceive)
