@@ -4,7 +4,7 @@ import json
 import urllib3
 
 def main():
-    transferMS()
+    #transferMS()
     receiveMS()
 
 def transferMS():
@@ -33,7 +33,10 @@ def transferMS():
                         senderAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["sender"]
                         receiverAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["receiver"]
                         uAsset = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["token"]["denom"]
-                        asset = uAsset[1:]
+                        if uAsset == "ibc/14F9BC3E44B8A9C1BE1FB08980FAB87034C9905EF17CF2F5008FC085218811CC":
+                            asset = "osmo"
+                        else:
+                            asset = uAsset[1:]
 
                         writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, asset, timestamp))
             time.sleep(8)
@@ -54,7 +57,7 @@ def receiveMS():
     try:
         writer = csv.writer(csvReceived, lineterminator='\n')
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Asset', 'Time'))
-        while offset <= 42885:
+        while offset <= 90: #42885:
             http = urllib3.PoolManager()
             urlReceive = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=RECEIVE".format(str(offset))
             r = http.request('GET', urlReceive)
@@ -74,6 +77,9 @@ def receiveMS():
                                     senderAddress = aDict["sender"]
                                     receiverAddress = aDict["receiver"]
                                     uAsset = aDict["denom"].split("/")
+                                    #if uAsset[2] == "ibc":
+                                    #    asset = "osmo"
+                                    #else:
                                     asset = uAsset[2][1:]
 
                                     writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, asset, timestamp))
