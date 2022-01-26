@@ -4,7 +4,7 @@ import json
 import urllib3
 
 def main():
-    # transferMS()
+    transferMS()
     receiveMS()
 
 def transferMS():
@@ -57,7 +57,7 @@ def receiveMS():
     try:
         writer = csv.writer(csvReceived, lineterminator='\n')
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Asset', 'Time'))
-        while offset <= 90: #42885:
+        while offset <= 42885:
             http = urllib3.PoolManager()
             urlReceive = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=RECEIVE".format(str(offset))
             r = http.request('GET', urlReceive)
