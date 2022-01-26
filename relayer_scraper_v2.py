@@ -4,7 +4,7 @@ import json
 import urllib3
 
 def main():
-    #transferMS()
+    # transferMS()
     receiveMS()
 
 def transferMS():
@@ -70,17 +70,19 @@ def receiveMS():
                         txSet.add(txhash)
                         timestamp = data_json["txs"][i]["header"]["timestamp"]
                         for j in range(1, len(data_json["txs"][i]["data"]["logs"])):
-                                if data_json["txs"][i]["data"]["logs"][j]["events"][0]["attributes"][0]["value"] == "/ibc.core.channel.v1.MsgRecvPacket":
-                                    jsonString = data_json["txs"][i]["data"]["logs"][j]["events"][1]["attributes"][0]["value"]
+                            for k in range(len(data_json["txs"][i]["data"]["logs"][j]["events"])):
+                                if data_json["txs"][i]["data"]["logs"][j]["events"][k]["type"] == "message" and data_json["txs"][i]["data"]["logs"][j]["events"][k]["attributes"][0]["value"] == "/ibc.core.channel.v1.MsgRecvPacket":
+                                    jsonString = data_json["txs"][i]["data"]["logs"][j]["events"][k+1]["attributes"][0]["value"]
                                     aDict = json.loads(jsonString)
                                     amount = aDict["amount"]
                                     senderAddress = aDict["sender"]
                                     receiverAddress = aDict["receiver"]
                                     uAsset = aDict["denom"].split("/")
-                                    #if uAsset[2] == "ibc":
-                                    #    asset = "osmo"
-                                    #else:
-                                    asset = uAsset[2][1:]
+                                    print(uAsset)
+                                    if uAsset[0] == "uosmo":
+                                        asset = "osmo"
+                                    else:
+                                        asset = "atom"
 
                                     writer.writerow((txhash, senderAddress, receiverAddress, float(amount)*.000001, asset, timestamp))
             time.sleep(8)
