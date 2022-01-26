@@ -78,7 +78,6 @@ def receiveMS():
                                     senderAddress = aDict["sender"]
                                     receiverAddress = aDict["receiver"]
                                     uAsset = aDict["denom"].split("/")
-                                    print(uAsset)
                                     if uAsset[0] == "uosmo":
                                         asset = "osmo"
                                     else:
