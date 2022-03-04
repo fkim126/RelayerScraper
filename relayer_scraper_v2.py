@@ -19,6 +19,10 @@ def transferMS():
         writer.writerow(('txHash', 'SenderAddress', 'ReceiverAddress', 'Amount', 'Asset', 'Time'))
         while offset <= 37800:
             http = urllib3.PoolManager()
+            
+            #https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-207/txs?limit=45&offset=0&messageType=TRANSFER JUNO
+            #https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-235/txs?limit=45&offset=0&messageType=TRANSFER SCRT
+            #osmo
             urlTransfer = "https://api.mintscan.io/v1/relayer/cosmoshub-4/channel-141/txs?limit=45&offset={}&messageType=TRANSFER".format(str(offset))
             r = http.request('GET', urlTransfer)
             data_json = json.loads(r.data.decode('utf8'))
@@ -33,6 +37,9 @@ def transferMS():
                         senderAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["sender"]
                         receiverAddress = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["receiver"]
                         uAsset = data_json["txs"][i]["data"]["tx"]["body"]["messages"][0]["token"]["denom"]
+                        
+                        #ibc/CDAB23DA5495290063363BD1C3499E26189036302DC689985A7E23F8DF8D8DB0 JUNO
+                        #ibc/1542F8DC70E7999691E991E1EDEB1B47E65E3A217B1649D347098EE48ACB580F SCRT
                         if uAsset == "ibc/14F9BC3E44B8A9C1BE1FB08980FAB87034C9905EF17CF2F5008FC085218811CC":
                             asset = "osmo"
                         else:
